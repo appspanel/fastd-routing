@@ -100,6 +100,19 @@ class RouteDispatcher extends Dispatcher
     {
         $route = $this->routeCollection->match($request);
 
+        if(is_string($callback = $route->getCallback())) {
+            $request->withAttribute('route.callback', $callback);
+        }
+        elseif(is_callable($callback)) {
+            $request->withAttribute('route.callback', 'callable');
+        }
+        elseif(is_array($callback)) {
+            $request->withAttribute('route.callback', ($callback[0] ?? '').'@'.($callback[1] ?? ''));
+        }
+        else {
+            $request->withAttribute('route.callback', null);
+        }
+
         foreach ($this->appendMiddleware as $middleware) {
             $route->withAddMiddleware($middleware);
         }
