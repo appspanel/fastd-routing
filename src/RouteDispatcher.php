@@ -15,6 +15,7 @@ use FastD\Middleware\Delegate;
 use FastD\Middleware\Dispatcher;
 use FastD\Middleware\MiddlewareInterface;
 use FastD\Routing\Exceptions\RouteException;
+use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -100,6 +101,19 @@ class RouteDispatcher extends Dispatcher
     public function dispatch(ServerRequestInterface $request)
     {
         $route = $this->routeCollection->match($request);
+
+        if(is_string($callback = $route->getCallback())) {
+            $request->withAttribute('route.callback', $callback);
+        }
+        elseif(is_callable($callback)) {
+            $request->withAttribute('route.callback', 'callable');
+        }
+        elseif(is_array($callback)) {
+            $request->withAttribute('route.callback', ($callback[0] ?? '').'@'.($callback[1] ?? ''));
+        }
+        else {
+            $request->withAttribute('route.callback', null);
+        }
 
         foreach ($this->appendMiddleware as $middleware) {
             $route->withAddMiddleware($middleware);
