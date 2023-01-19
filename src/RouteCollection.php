@@ -307,11 +307,16 @@ class RouteCollection
         $host = $serverRequest->getUri()->getHost();
 
         if (isset($this->staticRoutes[$method][$path])) {
+            // First, check with hosts
             foreach ($this->staticRoutes[$method][$path] as $route) {
-                if (in_array($host, $route->getHosts())) {
+                if (
+                    !empty($route->getHosts())
+                    && in_array($host, $route->getHosts())
+                ) {
                     return $this->activeRoute = $route;
                 }
             }
+            // Then, without hosts
             foreach ($this->staticRoutes[$method][$path] as $route) {
                 if (empty($route->getHosts())) {
                     return $this->activeRoute = $route;
@@ -395,7 +400,7 @@ class RouteCollection
             $format = '';
         }
 
-        if ($route->isStaticRoute()) {
+        if ($route->isStatic()) {
             return $route->getPath() . $format;
         }
 
