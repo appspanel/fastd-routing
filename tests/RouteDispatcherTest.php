@@ -11,8 +11,9 @@ use FastD\Http\Response;
 use FastD\Http\ServerRequest;
 use FastD\Routing\RouteCollection;
 use FastD\Routing\RouteDispatcher;
+use PHPUnit\Framework\TestCase;
 
-class RouteDispatcherTest extends PHPUnit_Framework_TestCase
+class RouteDispatcherTest extends TestCase
 {
     /**
      * @throws Exception

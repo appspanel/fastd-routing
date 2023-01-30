@@ -8,13 +8,14 @@
  */
 
 use FastD\Routing\RouteRegex;
+use PHPUnit\Framework\TestCase;
 
-class RouteRegexTest extends PHPUnit_Framework_TestCase
+class RouteRegexTest extends TestCase
 {
     public function testRegex()
     {
         $regex = new RouteRegex('/test/{name:\d+}/[{age}]');
-        $this->assertRegExp('~^(' . $regex->getRegex() . ')$~', '/test/18');
+        $this->assertMatchesRegularExpression('~^('.$regex->getRegex().')$~', '/test/18');
         $this->assertEquals(['name', 'age'], $regex->getVariables());
         $this->assertEquals([
             'name' => '\d+',
@@ -25,24 +26,24 @@ class RouteRegexTest extends PHPUnit_Framework_TestCase
     public function testMatchingLastCharset()
     {
         $regex = new RouteRegex('/[{name}]/');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/foo');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/foo');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/foo');
+        $this->assertMatchesRegularExpression('~^'.$regex->getRegex().'$~', '/foo');
 
         $regex = new RouteRegex('/{name}');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/foo');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/foo/');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/foo');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/foo/');
     }
 
     public function testFuzzyMatchingRoute()
     {
         $regex = new RouteRegex('/*');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/test/18');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/test/18');
 
         $regex = new RouteRegex('/abc/*');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/abc/foo/bar');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/abc/foo/bar');
 
         $regex = new RouteRegex('/foo/*');
-        $this->assertRegExp('~^' . $regex->getRegex() . '$~', '/foo/foo/bar');
+        $this->assertMatchesRegularExpression('~^' . $regex->getRegex() . '$~', '/foo/foo/bar');
     }
 
     public function testRouteStaticOrDynamic()

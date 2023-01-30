@@ -12,10 +12,11 @@ use FastD\Http\ServerRequest;
 use FastD\Middleware\Delegate;
 use FastD\Routing\Route;
 use FastD\Routing\RouteMiddleware;
+use PHPUnit\Framework\TestCase;
 
-class RouteMiddlewareTest extends PHPUnit_Framework_TestCase
+class RouteMiddlewareTest extends TestCase
 {
-    protected $response;
+    protected ?Response $response = null;
 
     protected function response()
     {

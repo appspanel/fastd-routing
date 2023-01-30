@@ -1,6 +1,7 @@
 <?php
 
 use FastD\Routing\RouteCollection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author    jan huang <bboyjanhuang@gmail.com>
@@ -9,14 +10,16 @@ use FastD\Routing\RouteCollection;
  * @link      https://www.github.com/janhuang
  * @link      http://www.fast-d.cn/
  */
-class RouteCollectionTest extends PHPUnit_Framework_TestCase
+class RouteCollectionTest extends TestCase
 {
     public function testNamespace()
     {
         $collection = new RouteCollection('\\Controller\\');
         $collection->get('/', 'IndexController@welcome');
-        $route = $collection->getRoute('/');
-        $this->assertEquals('\\Controller\\IndexController@welcome', $route->getCallback());
+
+        foreach($collection->getRoute('/') as $route) {
+            $this->assertEquals('\\Controller\\IndexController@welcome', $route->getCallback());
+        }
     }
 
     public function testMiddleware()
@@ -25,20 +28,28 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
         $collection->middleware('cors', function (RouteCollection $router) {
             $router->get('/', 'IndexController@welcome');
         });
-        $this->assertEquals(['cors'], $collection->getRoute('/')->getMiddleware());
+
+        foreach($collection->getRoute('/') as $route) {
+            $this->assertEquals(['cors'], $route->getMiddleware());
+        }
 
         $collection->get('/welcome', 'IndexController@welcome');
-        $this->assertEmpty($collection->getRoute('/welcome')->getMiddleware());
+
+        foreach($collection->getRoute('/welcome') as $route) {
+            $this->assertEmpty($route->getMiddleware());
+        }
     }
 
     public function testGroup()
     {
         $collection = new RouteCollection();
-        $collection->group([
-            'middleware' => 'test1',
-        ], function ($router) {
+        $collection->group(['middleware' => 'test1'], function ($router) {
             $router->get('/', 'Demo@Demo')->withAddMiddleware('test');
         });
+
+        foreach($collection->getRoute('/') as $route) {
+            $this->assertEquals(['test1', 'test'], $route->getMiddleware());
+        }
     }
 
     public function testRouteName()
@@ -49,7 +60,8 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
             'path' => '/',
         ], 'IndexController@welcome');
 
-        $route = $collection->getRoute('demo');
-        $this->assertEquals('/', $route->getPath());
+        foreach($collection->getRoute('demo') as $route) {
+            $this->assertEquals('/', $route->getPath());
+        }
     }
 }

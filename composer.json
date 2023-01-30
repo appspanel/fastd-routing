@@ -13,12 +13,12 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": ">=7.4",
         "fastd/middleware": "^1.0",
         "fastd/http": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.0"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -29,5 +29,12 @@
         "psr-4": {
             "": "tests/middleware"
         }
-    }
+    },
+    "repositories": [
+        {
+            "name": "fastd/http",
+            "type": "vcs",
+            "url": "https://github.com/appspanel/fastd-http.git"
+        }
+    ]
 }
