@@ -17,6 +17,9 @@ use FastD\Middleware\MiddlewareInterface;
 use FastD\Routing\Exceptions\RouteException;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
+use SplStack;
+use Throwable;
 
 /**
  * Class RouteDispatcher
@@ -149,7 +152,7 @@ class RouteDispatcher extends Dispatcher
                             $prototypeStack->push(is_string($definition) ? new $definition : $definition);
                         }
                     } else {
-                        throw new \RuntimeException(sprintf('Middleware %s is not defined.', $middleware));
+                        throw new RuntimeException(sprintf('Middleware %s is not defined.', $middleware));
                     }
                 } else {
                     throw new RouteException(sprintf('Don\'t support %s middleware', gettype($middleware)));
@@ -163,7 +166,7 @@ class RouteDispatcher extends Dispatcher
         try {
             $response = $this->PrototypeDispatch($prototypeStack, $request);
             unset($prototypeStack);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             unset($prototypeStack);
             throw $exception;
         }
@@ -171,13 +174,20 @@ class RouteDispatcher extends Dispatcher
         return $response;
     }
 
-    private function PrototypeDispatch(\SplStack $stack, $request) {
-        $response = $this->PrototypeResolve($stack)->process($request);
-
-        return $response;
+    /**
+     * @param \SplStack $stack
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return mixed
+     */
+    private function PrototypeDispatch(SplStack $stack, ServerRequestInterface $request) {
+        return $this->PrototypeResolve($stack)->process($request);
     }
 
-    private function PrototypeResolve(\SplStack $stack) {
+    /**
+     * @param \SplStack $stack
+     * @return \FastD\Middleware\Delegate
+     */
+    private function PrototypeResolve(SplStack $stack) {
         return $stack->isEmpty() ?
             new Delegate(
                 function () {
