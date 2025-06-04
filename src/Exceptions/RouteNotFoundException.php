@@ -12,14 +12,14 @@ namespace FastD\Routing\Exceptions;
 /**
  * Class RouteNotFoundException
  *
- * @package FastD\Routing
+ * @package FastD\Routing\Exceptions
  */
 class RouteNotFoundException extends RouteException
 {
     /**
      * RouteNotFoundException constructor.
      *
-     * @param string $path
+     * @param string $path The route's path.
      */
     public function __construct($path)
     {

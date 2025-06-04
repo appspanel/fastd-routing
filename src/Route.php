@@ -9,7 +9,6 @@
 
 namespace FastD\Routing;
 
-
 /**
  * Class Route
  *
@@ -33,7 +32,7 @@ class Route extends RouteRegex
     protected $callback;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $hosts = [];
 
@@ -48,17 +47,16 @@ class Route extends RouteRegex
      * @param string $method
      * @param $path
      * @param $callback
-     * @param array $hosts
+     * @param string[]|string $hosts
      */
     public function __construct($method, $path, $callback, $hosts = [])
     {
         parent::__construct($path);
 
         $this->withMethod($method);
-
         $this->withCallback($callback);
 
-        if(!empty($hosts)){
+        if(!empty($hosts)) {
             $this->withHosts($hosts);
         }
     }
@@ -83,18 +81,18 @@ class Route extends RouteRegex
     }
 
     /**
-     * @param array|string $hosts
+     * @param string[]|string $hosts
      * @return $this
      */
     public function withHosts($hosts)
     {
-        $this->hosts = $hosts;
+        $this->hosts = is_array($hosts) ? $hosts : [$hosts];
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getHosts()
     {

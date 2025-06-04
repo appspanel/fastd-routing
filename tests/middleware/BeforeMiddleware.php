@@ -18,6 +18,6 @@ class BeforeMiddleware extends \FastD\Middleware\Middleware
     {
         $str = 'before' . PHP_EOL;
         echo $str;
-        return $delegate($serverRequest);
+        return $delegate->process($serverRequest);
     }
 }

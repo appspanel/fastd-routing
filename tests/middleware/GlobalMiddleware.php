@@ -16,6 +16,6 @@ class GlobalMiddleware extends \FastD\Middleware\Middleware
     {
         echo 'global' . PHP_EOL;
 
-        return $delegate($serverRequest);
+        return $delegate->process($serverRequest);
     }
 }

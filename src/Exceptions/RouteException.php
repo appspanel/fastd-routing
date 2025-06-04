@@ -13,9 +13,9 @@ use RuntimeException;
 
 /**
  * Class RouteException
+ *
  * @package FastD\Routing\Exceptions
  */
 class RouteException extends RuntimeException
 {
-
 }

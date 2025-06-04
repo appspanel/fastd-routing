@@ -9,7 +9,6 @@
 
 namespace FastD\Routing;
 
-
 use FastD\Http\Response;
 use FastD\Middleware\DelegateInterface;
 use FastD\Middleware\Middleware;
@@ -18,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class RouteMiddleware
+ *
  * @package FastD\Routing
  */
 class RouteMiddleware extends Middleware
@@ -38,7 +38,7 @@ class RouteMiddleware extends Middleware
 
     /**
      * @param ServerRequestInterface $request
-     * @param DelegateInterface $next
+     * @param DelegateInterface|null $next
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request, DelegateInterface $next = null)

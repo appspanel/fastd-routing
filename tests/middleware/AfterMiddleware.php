@@ -18,6 +18,6 @@ class AfterMiddleware extends \FastD\Middleware\Middleware
     {
         $str = 'after' . PHP_EOL;
         echo $str;
-        return $delegate($serverRequest);
+        return $delegate->process($serverRequest);
     }
 }

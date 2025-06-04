@@ -25,6 +25,6 @@ class BreakerMiddleware extends Middleware
             return new Response('break');
         }
 
-        return $delegate($serverRequest)->withHeader('hello', 'world');
+        return $delegate->process($serverRequest)->withHeader('hello', 'world');
     }
 }

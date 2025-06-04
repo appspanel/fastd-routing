@@ -8,8 +8,9 @@
  */
 
 use FastD\Routing\Route;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends PHPUnit_Framework_TestCase
+class RouteTest extends TestCase
 {
     public function testStaticRoute()
     {
@@ -24,7 +25,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     {
         $route = new Route('GET', '/users/{name}', []);
         $regex = '~^(' . $route->getRegex() . ')$~';
-        $this->assertRegExp($regex, '/users/10');
+        $this->assertMatchesRegularExpression($regex, '/users/10');
     }
 
     public function testRouteIsStatic()
@@ -37,7 +38,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     {
         $route = new Route('GET', '/foo/*', []);
         $regex = '~^(' . $route->getRegex() . ')$~';
-        $this->assertRegExp($regex, '/foo/10');
-        $this->assertRegExp($regex, '/foo/bar');
+        $this->assertMatchesRegularExpression($regex, '/foo/10');
+        $this->assertMatchesRegularExpression($regex, '/foo/bar');
     }
 }

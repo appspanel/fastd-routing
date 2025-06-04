@@ -23,6 +23,7 @@ use Throwable;
 
 /**
  * Class RouteDispatcher
+ *
  * @package FastD\Routing
  */
 class RouteDispatcher extends Dispatcher

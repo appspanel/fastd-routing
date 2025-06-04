@@ -9,7 +9,6 @@
 
 namespace FastD\Routing;
 
-
 /**
  * Class RouteRegex
  *
@@ -17,7 +16,7 @@ namespace FastD\Routing;
  */
 class RouteRegex
 {
-    const VARIABLE_REGEX = <<<'REGEX'
+    public const VARIABLE_REGEX = <<<'REGEX'
 \{
     ([a-zA-Z0-9_?*]*)
     (?:
@@ -26,8 +25,8 @@ class RouteRegex
 \}
 REGEX;
 
-    const DEFAULT_DISPATCH_REGEX = '[^/]+';
-    const DEFAULT_OPTIONAL_REGEX = '[^/]*';
+    public const DEFAULT_DISPATCH_REGEX = '[^/]+';
+    public const DEFAULT_OPTIONAL_REGEX = '[^/]*';
 
     /**
      * @var array
